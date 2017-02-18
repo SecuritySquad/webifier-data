@@ -12,7 +12,7 @@ cd webifier-data
 cd ..
 
 cd run
-cp ../webifier-platform/build/libs/webifier-data-all-*.jar .
+cp ../webifier-data/build/libs/webifier-data-all-*.jar .
 
 JAR=$(ls| grep 'webifier\-data\-all\-.*\.jar')
 
