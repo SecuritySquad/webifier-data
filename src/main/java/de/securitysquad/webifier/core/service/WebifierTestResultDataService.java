@@ -6,6 +6,6 @@ import de.securitysquad.webifier.web.domain.response.WebifierTestResultDataRespo
 /**
  * Created by samuel on 18.02.17.
  */
-public interface WebifierDataService {
+public interface WebifierTestResultDataService {
     WebifierTestResultDataResponse pushTestResultDataRequest(WebifierTestResultDataRequest data);
 }
