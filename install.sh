@@ -8,7 +8,7 @@ then
 fi
 
 cd webifier-data
-./gradlew :buildAll
+./gradlew :build
 cd ..
 
 cd run
