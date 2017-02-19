@@ -12,9 +12,9 @@ cd webifier-data
 cd ..
 
 cd run
-cp ../webifier-data/build/libs/webifier-data-all-*.jar .
+cp ../webifier-data/build/libs/webifier-data-*.jar .
 
-JAR=$(ls| grep 'webifier\-data\-all\-.*\.jar')
+JAR=$(ls| grep 'webifier\-data\-.*\.jar')
 
 cat > start-data.sh << EOF
 killall webifier-data

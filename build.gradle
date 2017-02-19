@@ -3,7 +3,7 @@ version '0.0.1-SNAPSHOT'
 
 buildscript {
     ext {
-        springBootVersion = '1.4.1.RELEASE'
+        springBootVersion = '1.5.1.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -56,13 +56,4 @@ jar {
     manifest {
         attributes "Main-Class": "de.securitysquad.webifier.WebifierDataApplication"
     }
-}
-
-task buildAll(type: Jar) {
-    baseName = rootProject.name + '-all'
-    manifest {
-        attributes "Main-Class": "de.securitysquad.webifier.WebifierDataApplication"
-    }
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
 }
