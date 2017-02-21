@@ -12,6 +12,10 @@ cd webifier-data
 cd ..
 
 cd run
+
+rm -f webifier-data-*.jar
+rm -f start-data.sh
+
 cp ../webifier-data/build/libs/webifier-data-*.jar .
 
 JAR=$(ls| grep 'webifier\-data\-.*\.jar')

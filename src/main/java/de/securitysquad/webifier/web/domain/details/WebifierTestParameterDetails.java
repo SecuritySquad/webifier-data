@@ -1,4 +1,4 @@
-package de.securitysquad.webifier.web.domain.request;
+package de.securitysquad.webifier.web.domain.details;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -8,7 +8,7 @@ import javax.validation.constraints.Min;
 /**
  * Created by samuel on 18.02.17.
  */
-public class WebifierTestParametersRequest {
+public class WebifierTestParameterDetails {
     @JsonProperty
     @NotEmpty
     private String name;

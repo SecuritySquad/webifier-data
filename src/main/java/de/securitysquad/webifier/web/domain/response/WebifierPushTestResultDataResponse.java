@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Created by samuel on 17.02.17.
  */
-public class WebifierTestResultDataResponse {
+public class WebifierPushTestResultDataResponse {
     @JsonProperty
     private boolean success;
 
-    public WebifierTestResultDataResponse(boolean success) {
+    public WebifierPushTestResultDataResponse(boolean success) {
         this.success = success;
     }
 

@@ -1,8 +1,10 @@
 package de.securitysquad.webifier.web.controller;
 
 import de.securitysquad.webifier.core.service.WebifierTestResultDataService;
-import de.securitysquad.webifier.web.domain.request.WebifierTestResultDataRequest;
-import de.securitysquad.webifier.web.domain.response.WebifierTestResultDataResponse;
+import de.securitysquad.webifier.web.domain.request.WebifierCheckTestResultsRequest;
+import de.securitysquad.webifier.web.domain.request.WebifierPushTestResultDataRequest;
+import de.securitysquad.webifier.web.domain.response.WebifierCheckTestResultsResponse;
+import de.securitysquad.webifier.web.domain.response.WebifierPushTestResultDataResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -28,11 +30,20 @@ public class WebifierTestResultDataController {
     }
 
     @RequestMapping(value = "/push", method = RequestMethod.POST)
-    public WebifierTestResultDataResponse pushTestResult(@RequestBody @Valid WebifierTestResultDataRequest request, BindingResult result) {
+    public WebifierPushTestResultDataResponse pushTestResult(@RequestBody @Valid WebifierPushTestResultDataRequest request, BindingResult result) {
         if (result.hasErrors()) {
             LOG.info("Validation error!");
-            return new WebifierTestResultDataResponse(false);
+            return new WebifierPushTestResultDataResponse(false);
         }
         return dataService.pushTestResultDataRequest(request);
+    }
+
+    @RequestMapping(value = "/check", method = RequestMethod.POST)
+    public WebifierCheckTestResultsResponse checkTestResults(@RequestBody @Valid WebifierCheckTestResultsRequest request, BindingResult result) {
+        if (result.hasErrors()) {
+            LOG.info("Validation error!");
+            return new WebifierCheckTestResultsResponse(false);
+        }
+        return dataService.checkTestResultsRequest(request);
     }
 }

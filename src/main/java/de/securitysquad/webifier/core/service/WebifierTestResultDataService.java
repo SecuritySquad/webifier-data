@@ -1,11 +1,15 @@
 package de.securitysquad.webifier.core.service;
 
-import de.securitysquad.webifier.web.domain.request.WebifierTestResultDataRequest;
-import de.securitysquad.webifier.web.domain.response.WebifierTestResultDataResponse;
+import de.securitysquad.webifier.web.domain.request.WebifierCheckTestResultsRequest;
+import de.securitysquad.webifier.web.domain.request.WebifierPushTestResultDataRequest;
+import de.securitysquad.webifier.web.domain.response.WebifierCheckTestResultsResponse;
+import de.securitysquad.webifier.web.domain.response.WebifierPushTestResultDataResponse;
 
 /**
  * Created by samuel on 18.02.17.
  */
 public interface WebifierTestResultDataService {
-    WebifierTestResultDataResponse pushTestResultDataRequest(WebifierTestResultDataRequest data);
+    WebifierPushTestResultDataResponse pushTestResultDataRequest(WebifierPushTestResultDataRequest data);
+
+    WebifierCheckTestResultsResponse checkTestResultsRequest(WebifierCheckTestResultsRequest request);
 }

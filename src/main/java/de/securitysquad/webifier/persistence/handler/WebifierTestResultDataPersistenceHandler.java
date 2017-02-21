@@ -6,6 +6,7 @@ import de.securitysquad.webifier.persistence.service.WebifierTestResultDataPersi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,5 +31,10 @@ public class WebifierTestResultDataPersistenceHandler implements WebifierTestRes
         }
         WebifierTestResultData savedData = dataRepository.save(data);
         return ofNullable(savedData);
+    }
+
+    @Override
+    public List<WebifierTestResultData> getTestResultDataByHost(String host) {
+        return dataRepository.findByHostIgnoreCase(host);
     }
 }

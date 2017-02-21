@@ -1,6 +1,8 @@
 package de.securitysquad.webifier.web.domain.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.securitysquad.webifier.web.domain.details.WebifierOverallTestResultDetails;
+import de.securitysquad.webifier.web.domain.details.WebifierSingleTestDetails;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
@@ -10,7 +12,7 @@ import java.util.List;
 /**
  * Created by samuel on 17.02.17.
  */
-public class WebifierTestResultDataRequest {
+public class WebifierPushTestResultDataRequest {
     @JsonProperty
     @NotEmpty
     private String id;
@@ -22,13 +24,13 @@ public class WebifierTestResultDataRequest {
     private String testedUrl;
     @JsonProperty
     @NotNull
-    private WebifierOverallTestResultRequest result;
+    private WebifierOverallTestResultDetails result;
     @JsonProperty
     @Min(0)
     private long duration;
     @JsonProperty
     @NotNull
-    private List<WebifierSingleTestRequest> testResults;
+    private List<WebifierSingleTestDetails> testResults;
 
     public String getId() {
         return id;
@@ -42,7 +44,7 @@ public class WebifierTestResultDataRequest {
         return testedUrl;
     }
 
-    public WebifierOverallTestResultRequest getResult() {
+    public WebifierOverallTestResultDetails getResult() {
         return result;
     }
 
@@ -50,7 +52,7 @@ public class WebifierTestResultDataRequest {
         return duration;
     }
 
-    public List<WebifierSingleTestRequest> getTestResults() {
+    public List<WebifierSingleTestDetails> getTestResults() {
         return testResults;
     }
 

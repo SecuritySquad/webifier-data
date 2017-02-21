@@ -1,4 +1,4 @@
-package de.securitysquad.webifier.web.domain.request;
+package de.securitysquad.webifier.web.domain.details;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,16 +9,16 @@ import javax.validation.constraints.NotNull;
 /**
  * Created by samuel on 18.02.17.
  */
-public class WebifierOverallTestResultRequest {
+public class WebifierOverallTestResultDetails {
     @JsonProperty
     @NotNull
-    private WebifierTestResultRequest resultType;
+    private WebifierTestResultDetails resultType;
     @JsonProperty
     @Min(-1)
     @Max(1)
     private double resultValue;
 
-    public WebifierTestResultRequest getResultType() {
+    public WebifierTestResultDetails getResultType() {
         return resultType;
     }
 

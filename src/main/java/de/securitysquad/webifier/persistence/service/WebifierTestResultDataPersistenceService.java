@@ -2,6 +2,7 @@ package de.securitysquad.webifier.persistence.service;
 
 import de.securitysquad.webifier.persistence.domain.WebifierTestResultData;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -9,4 +10,6 @@ import java.util.Optional;
  */
 public interface WebifierTestResultDataPersistenceService {
     Optional<WebifierTestResultData> saveTestResultData(WebifierTestResultData data);
+
+    List<WebifierTestResultData> getTestResultDataByHost(String host);
 }

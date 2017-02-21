@@ -1,4 +1,4 @@
-package de.securitysquad.webifier.web.domain.request;
+package de.securitysquad.webifier.web.domain.details;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -9,16 +9,16 @@ import javax.validation.constraints.NotNull;
 /**
  * Created by samuel on 18.02.17.
  */
-public class WebifierSingleTestRequest {
+public class WebifierSingleTestDetails {
     @JsonProperty
     @NotEmpty
     private String testId;
     @JsonProperty
     @NotNull
-    private WebifierTestParametersRequest testData;
+    private WebifierTestParameterDetails testData;
     @JsonProperty
     @NotNull
-    private WebifierSingleTestResultRequest result;
+    private WebifierSingleTestResultDetails result;
     @JsonProperty
     @Min(0)
     private long duration;
@@ -27,11 +27,11 @@ public class WebifierSingleTestRequest {
         return testId;
     }
 
-    public WebifierTestParametersRequest getTestData() {
+    public WebifierTestParameterDetails getTestData() {
         return testData;
     }
 
-    public WebifierSingleTestResultRequest getResult() {
+    public WebifierSingleTestResultDetails getResult() {
         return result;
     }
 

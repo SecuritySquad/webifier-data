@@ -5,17 +5,19 @@ import de.securitysquad.webifier.persistence.domain.WebifierSingleTestResultData
 import de.securitysquad.webifier.persistence.domain.WebifierTestResult;
 import de.securitysquad.webifier.persistence.domain.WebifierTestResultData;
 import de.securitysquad.webifier.persistence.service.WebifierTestResultDataPersistenceService;
-import de.securitysquad.webifier.web.domain.request.WebifierSingleTestRequest;
-import de.securitysquad.webifier.web.domain.request.WebifierTestResultDataRequest;
-import de.securitysquad.webifier.web.domain.request.WebifierTestResultRequest;
-import de.securitysquad.webifier.web.domain.response.WebifierTestResultDataResponse;
+import de.securitysquad.webifier.web.domain.details.WebifierSingleTestDetails;
+import de.securitysquad.webifier.web.domain.details.WebifierTestResultDetails;
+import de.securitysquad.webifier.web.domain.request.WebifierCheckTestResultsRequest;
+import de.securitysquad.webifier.web.domain.request.WebifierPushTestResultDataRequest;
+import de.securitysquad.webifier.web.domain.response.WebifierCheckTestResultsResponse;
+import de.securitysquad.webifier.web.domain.response.WebifierPushTestResultDataResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -32,17 +34,64 @@ public class WebifierTestResultDataHandler implements WebifierTestResultDataServ
     }
 
     @Override
-    public WebifierTestResultDataResponse pushTestResultDataRequest(WebifierTestResultDataRequest dataRequest) {
+    public WebifierPushTestResultDataResponse pushTestResultDataRequest(WebifierPushTestResultDataRequest dataRequest) {
         try {
             WebifierTestResultData data = mapRequest(dataRequest);
             Optional<WebifierTestResultData> savedData = dataPersistenceService.saveTestResultData(data);
-            return new WebifierTestResultDataResponse(savedData.isPresent());
+            return new WebifierPushTestResultDataResponse(savedData.isPresent());
         } catch (MalformedURLException e) {
-            return new WebifierTestResultDataResponse(false);
+            return new WebifierPushTestResultDataResponse(false);
         }
     }
 
-    private WebifierTestResultData mapRequest(WebifierTestResultDataRequest request) throws MalformedURLException {
+    @Override
+    public WebifierCheckTestResultsResponse checkTestResultsRequest(WebifierCheckTestResultsRequest request) {
+        List<String> hosts = request.getUrls().stream().map(url -> {
+            try {
+                return filterHost(url);
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }).distinct().filter(StringUtils::isNotEmpty).collect(toList());
+        Map<String, WebifierTestResultDetails> hostResults = new HashMap<>();
+        hosts.forEach(host -> {
+            List<WebifierTestResultData> data = dataPersistenceService.getTestResultDataByHost(host)
+                    .stream().filter(d -> d.getOverallResultType() != WebifierTestResult.UNDEFINED).collect(toList());
+            if (data.isEmpty()) {
+                hostResults.put(host, WebifierTestResultDetails.UNDEFINED);
+            } else {
+                double resultValue = data.stream().mapToDouble(this::mapDataResultToIndex).average().orElse(1);
+                hostResults.put(host, mapResultValueToResult(resultValue));
+            }
+        });
+        if (hostResults.isEmpty()) {
+            return new WebifierCheckTestResultsResponse(false);
+        }
+        return new WebifierCheckTestResultsResponse(true, hostResults);
+    }
+
+    private double mapDataResultToIndex(WebifierTestResultData data) {
+        switch (data.getOverallResultType()) {
+            case CLEAN:
+                return 0;
+            case SUSPICIOUS:
+                return 0.3;
+            default:
+                return 1;
+        }
+    }
+
+    private WebifierTestResultDetails mapResultValueToResult(double result) {
+        if (result >= 0.5) {
+            return WebifierTestResultDetails.MALICIOUS;
+        }
+        if (result >= 0.1) {
+            return WebifierTestResultDetails.SUSPICIOUS;
+        }
+        return WebifierTestResultDetails.CLEAN;
+    }
+
+    private WebifierTestResultData mapRequest(WebifierPushTestResultDataRequest request) throws MalformedURLException {
         WebifierTestResultData data = new WebifierTestResultData();
         data.setTesterId(request.getId());
         data.setEnteredUrl(request.getEnteredUrl());
@@ -56,7 +105,7 @@ public class WebifierTestResultDataHandler implements WebifierTestResultDataServ
         return data;
     }
 
-    private WebifierSingleTestResultData mapSingleTestResults(WebifierSingleTestRequest request) {
+    private WebifierSingleTestResultData mapSingleTestResults(WebifierSingleTestDetails request) {
         WebifierSingleTestResultData data = new WebifierSingleTestResultData();
         data.setTestId(request.getTestId());
         data.setName(request.getTestData().getName());
@@ -72,7 +121,7 @@ public class WebifierTestResultDataHandler implements WebifierTestResultDataServ
         return data;
     }
 
-    private WebifierTestResult mapResultType(WebifierTestResultRequest resultType) {
+    private WebifierTestResult mapResultType(WebifierTestResultDetails resultType) {
         return WebifierTestResult.valueOf(resultType.name());
     }
 
