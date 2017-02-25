@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface WebifierTestResultDataRepository extends CrudRepository<WebifierTestResultData, String> {
-    List<WebifierTestResultData> findByHostIgnoreCase(String host);
+    List<WebifierTestResultData> findByHostContainingIgnoreCase(String host);
 }

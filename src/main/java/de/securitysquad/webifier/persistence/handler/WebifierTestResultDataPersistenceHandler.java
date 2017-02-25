@@ -35,6 +35,6 @@ public class WebifierTestResultDataPersistenceHandler implements WebifierTestRes
 
     @Override
     public List<WebifierTestResultData> getTestResultDataByHost(String host) {
-        return dataRepository.findByHostIgnoreCase(host);
+        return dataRepository.findByHostContainingIgnoreCase(host);
     }
 }
