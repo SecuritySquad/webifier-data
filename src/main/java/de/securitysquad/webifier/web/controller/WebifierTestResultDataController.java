@@ -48,7 +48,7 @@ public class WebifierTestResultDataController {
         return dataService.checkTestResultsRequest(request);
     }
 
-    @RequestMapping(value = "/count", method = RequestMethod.POST)
+    @RequestMapping(value = "/count")
     public WebifierTestResultsCountResponse countTestResults() {
         return dataService.countTestResultsRequest();
     }
