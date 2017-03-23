@@ -38,6 +38,7 @@ public class WebifierTestResultDataHandler implements WebifierTestResultDataServ
         try {
             WebifierTestResultData data = mapRequest(dataRequest);
             Optional<WebifierTestResultData> savedData = dataPersistenceService.saveTestResultData(data);
+            Runtime.getRuntime().gc();
             return new WebifierPushTestResultDataResponse(savedData.isPresent());
         } catch (MalformedURLException e) {
             return new WebifierPushTestResultDataResponse(false);
@@ -64,6 +65,7 @@ public class WebifierTestResultDataHandler implements WebifierTestResultDataServ
                 hostResults.put(host, mapResultValueToResult(resultValue));
             }
         });
+        Runtime.getRuntime().gc();
         if (hostResults.isEmpty()) {
             return new WebifierCheckTestResultsResponse(false);
         }
