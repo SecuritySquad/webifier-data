@@ -5,6 +5,7 @@ import de.securitysquad.webifier.web.domain.request.WebifierCheckTestResultsRequ
 import de.securitysquad.webifier.web.domain.request.WebifierPushTestResultDataRequest;
 import de.securitysquad.webifier.web.domain.response.WebifierCheckTestResultsResponse;
 import de.securitysquad.webifier.web.domain.response.WebifierPushTestResultDataResponse;
+import de.securitysquad.webifier.web.domain.response.WebifierTestResultsCountResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -45,5 +46,10 @@ public class WebifierTestResultDataController {
             return new WebifierCheckTestResultsResponse(false);
         }
         return dataService.checkTestResultsRequest(request);
+    }
+
+    @RequestMapping(value = "/count", method = RequestMethod.POST)
+    public WebifierTestResultsCountResponse countTestResults() {
+        return dataService.countTestResultsRequest();
     }
 }

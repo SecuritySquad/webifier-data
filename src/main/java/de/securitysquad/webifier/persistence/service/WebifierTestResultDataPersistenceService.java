@@ -12,4 +12,6 @@ public interface WebifierTestResultDataPersistenceService {
     Optional<WebifierTestResultData> saveTestResultData(WebifierTestResultData data);
 
     List<WebifierTestResultData> getTestResultDataByHost(String host);
+
+    long getTestResultsCount();
 }

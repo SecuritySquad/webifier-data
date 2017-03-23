@@ -11,6 +11,7 @@ import de.securitysquad.webifier.web.domain.request.WebifierCheckTestResultsRequ
 import de.securitysquad.webifier.web.domain.request.WebifierPushTestResultDataRequest;
 import de.securitysquad.webifier.web.domain.response.WebifierCheckTestResultsResponse;
 import de.securitysquad.webifier.web.domain.response.WebifierPushTestResultDataResponse;
+import de.securitysquad.webifier.web.domain.response.WebifierTestResultsCountResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,6 +71,11 @@ public class WebifierTestResultDataHandler implements WebifierTestResultDataServ
             return new WebifierCheckTestResultsResponse(false);
         }
         return new WebifierCheckTestResultsResponse(true, hostResults);
+    }
+
+    @Override
+    public WebifierTestResultsCountResponse countTestResultsRequest() {
+        return new WebifierTestResultsCountResponse(dataPersistenceService.getTestResultsCount());
     }
 
     private double mapDataResultToIndex(WebifierTestResultData data) {
