@@ -1,5 +1,7 @@
 package de.securitysquad.webifier.persistence.domain;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import javax.persistence.Id;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,7 @@ public class WebifierTestResultData {
     private double overallResultValue;
     private long durationInMillis;
     private Date datetime;
+    @DBRef
     private List<WebifierSingleTestResultData> testResults;
 
     public String getId() {

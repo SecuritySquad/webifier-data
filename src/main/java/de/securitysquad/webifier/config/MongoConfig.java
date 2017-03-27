@@ -2,6 +2,7 @@ package de.securitysquad.webifier.config;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import de.securitysquad.webifier.persistence.repository.WebifierSingleTestResultDataRepository;
 import de.securitysquad.webifier.persistence.repository.WebifierTestResultDataRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,8 @@ import java.net.UnknownHostException;
         basePackages = "de.securitysquad.webifier.persistence.repository",
         includeFilters = @ComponentScan.Filter(
                 value = {
-                        WebifierTestResultDataRepository.class
+                        WebifierTestResultDataRepository.class,
+                        WebifierSingleTestResultDataRepository.class
                 },
                 type = FilterType.ASSIGNABLE_TYPE
         )

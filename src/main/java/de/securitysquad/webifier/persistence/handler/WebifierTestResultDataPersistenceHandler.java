@@ -1,6 +1,7 @@
 package de.securitysquad.webifier.persistence.handler;
 
 import de.securitysquad.webifier.persistence.domain.WebifierTestResultData;
+import de.securitysquad.webifier.persistence.repository.WebifierSingleTestResultDataRepository;
 import de.securitysquad.webifier.persistence.repository.WebifierTestResultDataRepository;
 import de.securitysquad.webifier.persistence.service.WebifierTestResultDataPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,13 @@ import static java.util.Optional.ofNullable;
  */
 @Component
 public class WebifierTestResultDataPersistenceHandler implements WebifierTestResultDataPersistenceService {
-    private final WebifierTestResultDataRepository dataRepository;
+    private final WebifierTestResultDataRepository testRepository;
+    private final WebifierSingleTestResultDataRepository singleTestRepository;
 
     @Autowired
-    public WebifierTestResultDataPersistenceHandler(WebifierTestResultDataRepository dataRepository) {
-        this.dataRepository = dataRepository;
+    public WebifierTestResultDataPersistenceHandler(WebifierTestResultDataRepository testRepository, WebifierSingleTestResultDataRepository singleTestRepository) {
+        this.testRepository = testRepository;
+        this.singleTestRepository = singleTestRepository;
     }
 
     @Override
@@ -29,17 +32,23 @@ public class WebifierTestResultDataPersistenceHandler implements WebifierTestRes
         if (data.getId() == null) {
             data.setId(UUID.randomUUID().toString());
         }
-        WebifierTestResultData savedData = dataRepository.save(data);
+        data.getTestResults().forEach(result -> {
+            if (result.getId() == null) {
+                result.setId(UUID.randomUUID().toString());
+            }
+        });
+        singleTestRepository.save(data.getTestResults());
+        WebifierTestResultData savedData = testRepository.save(data);
         return ofNullable(savedData);
     }
 
     @Override
     public List<WebifierTestResultData> getTestResultDataByHost(String host) {
-        return dataRepository.findByHostContainingIgnoreCase(host);
+        return testRepository.findByHostContainingIgnoreCase(host);
     }
 
     @Override
     public long getTestResultsCount() {
-        return dataRepository.count();
+        return testRepository.count();
     }
 }
