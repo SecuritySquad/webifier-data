@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -32,6 +33,18 @@ public class WebifierTestResultDataHandler implements WebifierTestResultDataServ
     @Autowired
     public WebifierTestResultDataHandler(WebifierTestResultDataPersistenceService dataPersistenceService) {
         this.dataPersistenceService = dataPersistenceService;
+    }
+
+    @PostConstruct
+    public void update() {
+        int pageSize = 2000;
+        int pages = dataPersistenceService.getTestResultDataPageSize(pageSize);
+        System.out.println("Update " + pages + " pages with " + pageSize + " entries per page:");
+        for (int i = 0; i < pages; i++) {
+            System.out.println("Updating page " + (i + 1) + " of " + pages);
+            dataPersistenceService.getTestResultDataPage(i, pageSize).forEach(dataPersistenceService::saveTestResultData);
+        }
+        System.out.println("Done!");
     }
 
     @Override
@@ -76,19 +89,6 @@ public class WebifierTestResultDataHandler implements WebifierTestResultDataServ
     @Override
     public WebifierTestResultsCountResponse countTestResultsRequest() {
         return new WebifierTestResultsCountResponse(dataPersistenceService.getTestResultsCount());
-    }
-
-    @Override
-    public String update() {
-        int pageSize = 10000;
-        int pages = dataPersistenceService.getTestResultDataPageSize(pageSize);
-        System.out.println("Update " + pages + " pages with " + pageSize + " entries per page:");
-        for (int i = 0; i < pages; i++) {
-            System.out.println("Updating page " + (i + 1) + " of " + pages);
-            dataPersistenceService.getTestResultDataPage(i, pageSize).forEach(dataPersistenceService::saveTestResultData);
-        }
-        System.out.println("Done!");
-        return "Done";
     }
 
     private double mapDataResultToIndex(WebifierTestResultData data) {
