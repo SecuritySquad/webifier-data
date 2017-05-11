@@ -5,6 +5,7 @@ import de.securitysquad.webifier.persistence.repository.WebifierSingleTestResult
 import de.securitysquad.webifier.persistence.repository.WebifierTestResultDataRepository;
 import de.securitysquad.webifier.persistence.service.WebifierTestResultDataPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -36,6 +37,9 @@ public class WebifierTestResultDataPersistenceHandler implements WebifierTestRes
             if (result.getId() == null) {
                 result.setId(UUID.randomUUID().toString());
             }
+            if (result.getOverallResult() == null) {
+                result.setOverallResult(data);
+            }
         });
         singleTestRepository.save(data.getTestResults());
         WebifierTestResultData savedData = testRepository.save(data);
@@ -50,5 +54,16 @@ public class WebifierTestResultDataPersistenceHandler implements WebifierTestRes
     @Override
     public long getTestResultsCount() {
         return testRepository.count();
+    }
+
+    @Override
+    public List<WebifierTestResultData> getTestResultDataPage(int page, int size) {
+        return testRepository.findAll(new PageRequest(page, size)).getContent();
+    }
+
+
+    @Override
+    public int getTestResultDataPageSize(int size) {
+        return (int) (testRepository.count() / size) + 1;
     }
 }

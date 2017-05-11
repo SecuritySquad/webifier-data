@@ -15,4 +15,6 @@ public interface WebifierTestResultDataService {
     WebifierCheckTestResultsResponse checkTestResultsRequest(WebifierCheckTestResultsRequest request);
 
     WebifierTestResultsCountResponse countTestResultsRequest();
+
+    String update();
 }

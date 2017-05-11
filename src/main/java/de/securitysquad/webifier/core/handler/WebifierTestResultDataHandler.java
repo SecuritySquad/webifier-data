@@ -78,6 +78,19 @@ public class WebifierTestResultDataHandler implements WebifierTestResultDataServ
         return new WebifierTestResultsCountResponse(dataPersistenceService.getTestResultsCount());
     }
 
+    @Override
+    public String update() {
+        int pageSize = 10000;
+        int pages = dataPersistenceService.getTestResultDataPageSize(pageSize);
+        System.out.println("Update " + pages + " pages with " + pageSize + " entries per page:");
+        for (int i = 0; i < pages; i++) {
+            System.out.println("Updating page " + (i + 1) + " of " + pages);
+            dataPersistenceService.getTestResultDataPage(i, pageSize).forEach(dataPersistenceService::saveTestResultData);
+        }
+        System.out.println("Done!");
+        return "Done";
+    }
+
     private double mapDataResultToIndex(WebifierTestResultData data) {
         switch (data.getOverallResultType()) {
             case CLEAN:

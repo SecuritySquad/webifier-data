@@ -1,5 +1,7 @@
 package de.securitysquad.webifier.persistence.domain;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import javax.persistence.Id;
 
 /**
@@ -19,6 +21,8 @@ public class WebifierSingleTestResultData {
     private WebifierTestResult result;
     private Object resultInfo;
     private long durationInMillis;
+    @DBRef
+    private WebifierTestResultData overallResult;
 
     public String getId() {
         return id;
@@ -114,5 +118,13 @@ public class WebifierSingleTestResultData {
 
     public void setDurationInMillis(long durationInMillis) {
         this.durationInMillis = durationInMillis;
+    }
+
+    public WebifierTestResultData getOverallResult() {
+        return overallResult;
+    }
+
+    public void setOverallResult(WebifierTestResultData overallResult) {
+        this.overallResult = overallResult;
     }
 }

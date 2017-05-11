@@ -14,4 +14,8 @@ public interface WebifierTestResultDataPersistenceService {
     List<WebifierTestResultData> getTestResultDataByHost(String host);
 
     long getTestResultsCount();
+
+    List<WebifierTestResultData> getTestResultDataPage(int page, int size);
+
+    int getTestResultDataPageSize(int size);
 }
